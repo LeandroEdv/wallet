@@ -81,9 +81,9 @@ class connect:
             
             print(queryResult)
 
-comu = connect()
+#comu = connect()
 #comu.createTable_db()  
-comu.insert_db('knri',13,100)
-comu.showAll_db()
+#comu.insert_db('knri',13,100)
+#comu.showAll_db()
 #comu.showNames_db()
-comu.show()
+#comu.show()
