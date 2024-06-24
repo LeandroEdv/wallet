@@ -1,9 +1,9 @@
-import connect
+from connect import connect
 import customtkinter as ctk
 from tkinter import *
 from tkinter import messagebox
 
-class screen(ctk.CTk):
+class screen(ctk.CTk,connect):
     
     def __init__(self):
         super().__init__()
@@ -16,13 +16,32 @@ class screen(ctk.CTk):
         self.title("Carteira de Investimentos 1.0")
         self.resizable(0, 0) 
         self._set_appearance_mode("Dark")
+    
+    # ### Realizar o tratamento dessas variaveis !
+    def get_entry(self):
+        desable = ["!","@","%"]
+        if desable in self.stockName_entry.get():
+            mgs = messagebox.showerror("Erro","caracter não suportado")
+        else:
+            self.stockName = self.stockName_entry.get()
+            self.price = self.price_entry.get()
+            self.amount = self.amount_entry.get()
+            self.data = self.data_entry.get()   
         
+    
+    def confirm_action(self):
+        action = messagebox.askyesno("Confirmar cadastro","Você tem certeza que deseja cadastrar ?")
+        if action:
+            self.get_entry()
+            self.insert_db(self.stockName, self.price, self.amount)
+            action_confirmed = messagebox.showinfo("Confirmado!","cadastrado com sucesso ")
+        else:
+            return
+           
     def register_screan(self):
         
-        
-        
         #self.frame_login.pack()
-        self.frame_login = ctk.CTkFrame(self, width=650, height=600)
+        self.frame_login = ctk.CTkFrame(self, width=650, height=600, corner_radius=5)
         self.frame_login.grid(row=0, column=0, padx=20, pady=20)
 
         self.title_label = ctk.CTkLabel(self.frame_login, font=("Century Gothic bold", 16), text="Cadastre seus Ativos!")
@@ -47,11 +66,18 @@ class screen(ctk.CTk):
         self.info_frame_button = ctk.CTkFrame(self.frame_login)
         self.info_frame_button.grid(row=3, column=0, padx=5, pady=5, sticky='w')
         
-        self.register_button = ctk.CTkButton(self.info_frame_button, width=200, corner_radius=10, text="Registrar" )
+    # Botoes de ação da operação !
+            
+        self.register_button = ctk.CTkButton(self.info_frame_button, width=200, corner_radius=10, text="Registrar", command=self.get_entry)
         self.register_button.grid(row=3, column=0, sticky=ctk.W, padx=5, pady=5)
         
-        self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=75, corner_radius=10, text="Sair", fg_color='#E35F82')
+        self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=75, corner_radius=10, text="Sair", fg_color='#909899')
         self.Exit_register_button.grid(row=3, column=1, sticky=ctk.W, padx=(50, 0), pady=5)
+        
+        
+         
+    
+              
 
 if __name__ == '__main__':
     app = screen()
