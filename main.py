@@ -2,6 +2,11 @@ from connect import connect
 import customtkinter as ctk
 from tkinter import *
 from tkinter import messagebox
+import tkinter as tk
+from tkinter import ttk
+
+
+
 
 class screen(ctk.CTk,connect):
     
@@ -48,8 +53,8 @@ class screen(ctk.CTk,connect):
         self.title_label = ctk.CTkLabel(self.frame_login, font=("Century Gothic bold", 18), text="Cadastre seus Ativos!")
         self.title_label.grid(row=0, column=0, padx=5, pady=5, sticky='w')
 
-        self.stockName_entry = ctk.CTkEntry(self.frame_login, width=350, corner_radius=10, placeholder_text="Nome do Ativo", font=("Century Gothic bold", 10))
-        self.stockName_entry.grid(row=1, column=0, padx=5, pady=5, sticky='w')
+        self.stockName_entry = ctk.CTkEntry(self.frame_login, width=330, corner_radius=5, placeholder_text="Nome do Ativo", font=("Century Gothic bold", 10))
+        self.stockName_entry.grid(row=1, column=0, padx=15, pady=5, sticky='w')
 
         # Frame interno para alinhar price, amount e data
         self.info_frame = ctk.CTkFrame(self.frame_login)
@@ -57,9 +62,11 @@ class screen(ctk.CTk,connect):
 
         self.price_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=5, placeholder_text="Preço por unidade", font=("Century Gothic bold", 10))
         self.price_entry.grid(row=0, column=0, padx=10, pady=5)
+        self.price_entry.bind('<KeyRelease>', self.calc)
 
         self.amount_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=5, placeholder_text="Quantidade", font=("Century Gothic bold", 10))
         self.amount_entry.grid(row=0, column=1, padx=5, pady=5)
+        self.amount_entry.bind('<KeyRelease>', self.calc)
 
         self.data_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=5, placeholder_text="DD/MM/AA", font=("Century Gothic bold", 10))
         self.data_entry.grid(row=0, column=2, padx=10, pady=5)
@@ -74,21 +81,23 @@ class screen(ctk.CTk,connect):
         
         self.brokerage_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
         self.brokerage_entry.grid(row=0, column=1, padx=(10,10), pady=5)
+        self.brokerage_entry.bind('<KeyRelease>', self.calc)
         
         self.others_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Outros custos:")
         self.others_label.grid(row=1, column=0, padx=5, pady=5, sticky='W')
 
         self.others_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
         self.others_entry.grid(row=1, column=1, padx=(10,10), pady=5)
+        self.others_entry.bind('<KeyRelease>', self.calc)
         
         # exibir o valor total da operação!
         self.info_cousts_frame = ctk.CTkFrame(self.frame_login)
         self.info_cousts_frame.grid(row=4, column=0, padx=10, pady=10, sticky='E') 
         
-        self.total_others_label = ctk.CTkLabel(self.info_cousts_frame, font=("Century Gothic bold", 12), text="Custo total da operação:")
-        self.total_others_label.grid(row=0, column=0, padx=5, pady=5, sticky='W')
+        self.total_others_labe = ctk.CTkLabel(self.info_cousts_frame, font=("Century Gothic bold", 12), text="Custo total da operação:")
+        self.total_others_labe.grid(row=0, column=0, padx=5, pady=5, sticky='W')
         
-        self.total_others_label = ctk.CTkLabel(self.info_cousts_frame, font=("Century Gothic bold", 16), text="0,00")
+        self.total_others_label = ttk.Label(self.info_cousts_frame, font=("Century Gothic bold", 16), text="0,00")
         self.total_others_label.grid(row=0, column=1, padx=5, pady=5, sticky='E')
         
     # Botoes de ação da operação !   
@@ -98,11 +107,27 @@ class screen(ctk.CTk,connect):
         self.register_button = ctk.CTkButton(self.info_frame_button, width=200, height=30, corner_radius=5, text="Registrar", command=self.get_entry)
         self.register_button.grid(row=4, column=0, sticky=ctk.W, padx=5, pady=5)
         
-        self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=50, height=30, corner_radius=5, text="Sair", fg_color='#909899')
+        self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=50, height=30, corner_radius=5, text="Sair", fg_color='#909899', command=self.calc)
         self.Exit_register_button.grid(row=4, column=1, sticky=E, padx=(50, 0), pady=5)
         
         
-         
+        
+    def calc(self, event=None):
+        
+        try:
+            price = float(self.price_entry.get())
+            amount = float(self.amount_entry.get())
+            brokerage = float(self.brokerage_entry.get())
+            others = float(self.others_entry.get())
+            
+            
+        except:
+            return False
+        else:
+            total = (price * amount) + brokerage + others
+            #total = price * 3
+            self.total_others_label.config(text=total)
+        #return "12"
     
               
 
