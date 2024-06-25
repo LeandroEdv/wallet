@@ -19,15 +19,16 @@ class screen(ctk.CTk,connect):
     
     # ### Realizar o tratamento dessas variaveis !
     def get_entry(self):
-        desable = ["!","@","%"]
-        if desable in self.stockName_entry.get():
-            mgs = messagebox.showerror("Erro","caracter não suportado")
-        else:
+        #desable = ["!","@","%"]
+        #if desable in self.stockName_entry.get():
+            #mgs = messagebox.showerror("Erro","caracter não suportado")
+        #else:
             self.stockName = self.stockName_entry.get()
             self.price = self.price_entry.get()
             self.amount = self.amount_entry.get()
             self.data = self.data_entry.get()   
-        
+            self.brokerage = self.brokerage_entry.get()
+            self.others = self.others_entry.get()
     
     def confirm_action(self):
         action = messagebox.askyesno("Confirmar cadastro","Você tem certeza que deseja cadastrar ?")
@@ -44,7 +45,7 @@ class screen(ctk.CTk,connect):
         self.frame_login = ctk.CTkFrame(self, width=650, height=600, corner_radius=5)
         self.frame_login.grid(row=0, column=0, padx=20, pady=20)
 
-        self.title_label = ctk.CTkLabel(self.frame_login, font=("Century Gothic bold", 16), text="Cadastre seus Ativos!")
+        self.title_label = ctk.CTkLabel(self.frame_login, font=("Century Gothic bold", 18), text="Cadastre seus Ativos!")
         self.title_label.grid(row=0, column=0, padx=5, pady=5, sticky='w')
 
         self.stockName_entry = ctk.CTkEntry(self.frame_login, width=350, corner_radius=10, placeholder_text="Nome do Ativo", font=("Century Gothic bold", 10))
@@ -54,25 +55,51 @@ class screen(ctk.CTk,connect):
         self.info_frame = ctk.CTkFrame(self.frame_login)
         self.info_frame.grid(row=2, column=0, padx=5, pady=5, sticky='w')
 
-        self.price_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=10, placeholder_text="Preço por unidade", font=("Century Gothic bold", 10))
+        self.price_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=5, placeholder_text="Preço por unidade", font=("Century Gothic bold", 10))
         self.price_entry.grid(row=0, column=0, padx=10, pady=5)
 
-        self.amount_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=10, placeholder_text="Quantidade", font=("Century Gothic bold", 10))
+        self.amount_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=5, placeholder_text="Quantidade", font=("Century Gothic bold", 10))
         self.amount_entry.grid(row=0, column=1, padx=5, pady=5)
 
-        self.data_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=10, placeholder_text="Data da compra", font=("Century Gothic bold", 10))
+        self.data_entry = ctk.CTkEntry(self.info_frame, width=100, corner_radius=5, placeholder_text="DD/MM/AA", font=("Century Gothic bold", 10))
         self.data_entry.grid(row=0, column=2, padx=10, pady=5)
 
+        
+    # Frame para conter a cesão de custos gerais
+        self.costs_frame = ctk.CTkFrame(self.frame_login)
+        self.costs_frame.grid(row=3, column=0, padx=5, pady=5, sticky='E')
+        
+        self.brokerage_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Custos de corretagem:")
+        self.brokerage_label.grid(row=0, column=0, padx=5, pady=5, sticky='w')
+        
+        self.brokerage_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
+        self.brokerage_entry.grid(row=0, column=1, padx=(10,10), pady=5)
+        
+        self.others_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Outros custos:")
+        self.others_label.grid(row=1, column=0, padx=5, pady=5, sticky='W')
+
+        self.others_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
+        self.others_entry.grid(row=1, column=1, padx=(10,10), pady=5)
+        
+        # exibir o valor total da operação!
+        self.info_cousts_frame = ctk.CTkFrame(self.frame_login)
+        self.info_cousts_frame.grid(row=4, column=0, padx=10, pady=10, sticky='E') 
+        
+        self.total_others_label = ctk.CTkLabel(self.info_cousts_frame, font=("Century Gothic bold", 12), text="Custo total da operação:")
+        self.total_others_label.grid(row=0, column=0, padx=5, pady=5, sticky='W')
+        
+        self.total_others_label = ctk.CTkLabel(self.info_cousts_frame, font=("Century Gothic bold", 16), text="0,00")
+        self.total_others_label.grid(row=0, column=1, padx=5, pady=5, sticky='E')
+        
+    # Botoes de ação da operação !   
         self.info_frame_button = ctk.CTkFrame(self.frame_login)
-        self.info_frame_button.grid(row=3, column=0, padx=5, pady=5, sticky='w')
+        self.info_frame_button.grid(row=5, column=0, padx=10, pady=10, sticky='E') 
+         
+        self.register_button = ctk.CTkButton(self.info_frame_button, width=200, height=30, corner_radius=5, text="Registrar", command=self.get_entry)
+        self.register_button.grid(row=4, column=0, sticky=ctk.W, padx=5, pady=5)
         
-    # Botoes de ação da operação !
-            
-        self.register_button = ctk.CTkButton(self.info_frame_button, width=200, corner_radius=10, text="Registrar", command=self.get_entry)
-        self.register_button.grid(row=3, column=0, sticky=ctk.W, padx=5, pady=5)
-        
-        self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=75, corner_radius=10, text="Sair", fg_color='#909899')
-        self.Exit_register_button.grid(row=3, column=1, sticky=ctk.W, padx=(50, 0), pady=5)
+        self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=50, height=30, corner_radius=5, text="Sair", fg_color='#909899')
+        self.Exit_register_button.grid(row=4, column=1, sticky=E, padx=(50, 0), pady=5)
         
         
          
