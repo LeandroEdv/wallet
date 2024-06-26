@@ -76,7 +76,7 @@ class screen(ctk.CTk,connect):
         self.costs_frame = ctk.CTkFrame(self.frame_login)
         self.costs_frame.grid(row=3, column=0, padx=5, pady=5, sticky='E')
         
-        self.brokerage_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Custos de corretagem:")
+        self.brokerage_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Custos de corretagem por ativo:")
         self.brokerage_label.grid(row=0, column=0, padx=5, pady=5, sticky='w')
         
         self.brokerage_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
@@ -115,17 +115,26 @@ class screen(ctk.CTk,connect):
     def calc(self, event=None):
         
         try:
+            brokerage = float(self.brokerage_entry.get())
+            #others = float(self.others_entry.get()) 
+        except:
+            brokerage = 0
+            #others = 0 
+        try:
+            #brokerage = float(self.brokerage_entry.get())
+            others = float(self.others_entry.get()) 
+        except:
+            #brokerage = 0
+            others = 0 
+        try:
             price = float(self.price_entry.get())
             amount = float(self.amount_entry.get())
-            brokerage = float(self.brokerage_entry.get())
-            others = float(self.others_entry.get())
-            
-            
+            #brokerage = float(self.brokerage_entry.get())
+            #others = float(self.others_entry.get())  
         except:
             return False
         else:
-            total = (price * amount) + brokerage + others
-            #total = price * 3
+            total = ((price + brokerage) * amount)  + others
             self.total_others_label.config(text=total)
         #return "12"
     
