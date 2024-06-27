@@ -5,7 +5,8 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
 
-
+# trabalhando com expressões regulares
+import re 
 
 
 class screen(ctk.CTk,connect):
@@ -104,7 +105,7 @@ class screen(ctk.CTk,connect):
         self.info_frame_button = ctk.CTkFrame(self.frame_login)
         self.info_frame_button.grid(row=5, column=0, padx=10, pady=10, sticky='E') 
          
-        self.register_button = ctk.CTkButton(self.info_frame_button, width=200, height=30, corner_radius=5, text="Registrar", command=self.get_entry)
+        self.register_button = ctk.CTkButton(self.info_frame_button, width=200, height=30, corner_radius=5, text="Registrar Compra", command=self.validtes_stock)
         self.register_button.grid(row=4, column=0, sticky=ctk.W, padx=5, pady=5)
         
         self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=50, height=30, corner_radius=5, text="Sair", fg_color='#909899', command=self.calc)
@@ -113,18 +114,13 @@ class screen(ctk.CTk,connect):
         
         
     def calc(self, event=None):
-        
         try:
-            brokerage = float(self.brokerage_entry.get())
-            #others = float(self.others_entry.get()) 
+            brokerage = float(self.brokerage_entry.get()) 
         except:
             brokerage = 0
-            #others = 0 
         try:
-            #brokerage = float(self.brokerage_entry.get())
             others = float(self.others_entry.get()) 
         except:
-            #brokerage = 0
             others = 0 
         try:
             price = float(self.price_entry.get())
@@ -138,7 +134,16 @@ class screen(ctk.CTk,connect):
             self.total_others_label.config(text=total)
         #return "12"
     
-              
+    def validtes_stock(self):
+        try:
+            stockName = self.stockName_entry.get()
+            valid = '[a-zA-Z0-9]{4,7}'
+            if re.match(valid, stockName):
+                msg = messagebox.showinfo("Confirmado!","cadastrado com sucesso ")
+        except:
+            erro = messagebox.ERROR("erro","erro")
+        else:
+            return False      
 
 if __name__ == '__main__':
     app = screen()
