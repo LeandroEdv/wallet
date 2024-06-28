@@ -25,10 +25,6 @@ class screen(ctk.CTk,connect):
     
     # ### Realizar o tratamento dessas variaveis !
     def get_entry(self):
-        #desable = ["!","@","%"]
-        #if desable in self.stockName_entry.get():
-            #mgs = messagebox.showerror("Erro","caracter não suportado")
-        #else:
             self.stockName = self.stockName_entry.get()
             self.price = self.price_entry.get()
             self.amount = self.amount_entry.get()
@@ -135,16 +131,15 @@ class screen(ctk.CTk,connect):
         #return "12"
     
     def validtes_stock(self):
-        try:
-            stockName = self.stockName_entry.get()
-            valid = '[a-zA-Z0-9]{4,7}'
-            if re.match(valid, stockName):
-                msg = messagebox.showinfo("Confirmado!","cadastrado com sucesso ")
-        except:
-            erro = messagebox.ERROR("erro","erro")
+        
+        stockName = self.stockName_entry.get()
+        pattern = r"[^\w_]"
+        if re.findall(pattern, stockName):
+            erro = messagebox.showerror("Erro","Caracteres não permitidos")
         else:
+            msg = messagebox.showinfo("Confirmado!","cadastrado com sucesso ")
             return False      
-
+            
 if __name__ == '__main__':
     app = screen()
     app.mainloop()
