@@ -23,6 +23,42 @@ class screen(ctk.CTk,connect):
         self.resizable(0, 0) 
         self._set_appearance_mode("Dark")
     
+    def calc(self, event=None):
+        pattern = r'^\d{1,8}$'
+        
+        if re.findall(pattern, self.brokerage_entry.get()):
+            print('pasou')
+            brokerage = float(self.brokerage_entry.get())
+        else:
+            #print('não pasou')
+            self.brokerage_entry.delete(0,END)
+            brokerage = 0
+            
+        if re.findall(pattern, self.others_entry.get()):
+           # print('pasou')
+            others = float(self.others_entry.get())
+        else:
+            #print('não pasou')
+            self.others_entry.delete(0,END)
+            others = 0
+            
+        if re.findall(pattern, self.price_entry.get()):
+            print('pasou price')
+            price = float(self.price_entry.get())
+        else:
+            self.price_entry.delete(0,END)
+            
+            
+        if re.findall(pattern, self.amount_entry.get()):
+            print('pasou amount')
+            amount = float(self.amount_entry.get()) 
+            total = ((price + brokerage) * amount)  + others
+            self.total_others_label.config(text=f'{total} R$')
+            self.value_total = total
+        else:
+            messagebox.showwarning('Atenção','Caracter invalido')
+            self.amount_entry.delete(0,END) 
+        
     # ### Realizar o tratamento dessas variaveis !
     def get_entry(self):
             self.stockName = self.stockName_entry.get()
@@ -31,7 +67,20 @@ class screen(ctk.CTk,connect):
             self.data = self.data_entry.get()   
             self.brokerage = self.brokerage_entry.get()
             self.others = self.others_entry.get()
-    
+            
+    def validtes_stock(self):
+        
+        #self.get_entry()
+        self.stockName = self.stockName_entry.get()
+        self.calc()
+        
+        pattern = r"[^\w_]"
+        if re.findall(pattern, self.stockName):
+            erro = messagebox.showerror("Erro","Caracteres não permitidos")
+        else:
+            msg = messagebox.showinfo("Confirmado!","cadastrado com sucesso ")
+            return False   
+        
     def confirm_action(self):
         action = messagebox.askyesno("Confirmar cadastro","Você tem certeza que deseja cadastrar ?")
         if action:
@@ -76,14 +125,14 @@ class screen(ctk.CTk,connect):
         self.brokerage_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Custos de corretagem por ativo:")
         self.brokerage_label.grid(row=0, column=0, padx=5, pady=5, sticky='w')
         
-        self.brokerage_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
+        self.brokerage_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00 R$", font=("Century Gothic bold", 10))
         self.brokerage_entry.grid(row=0, column=1, padx=(10,10), pady=5)
         self.brokerage_entry.bind('<KeyRelease>', self.calc)
         
         self.others_label = ctk.CTkLabel(self.costs_frame, font=("Century Gothic bold", 12), text="Outros custos:")
         self.others_label.grid(row=1, column=0, padx=5, pady=5, sticky='W')
 
-        self.others_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00", font=("Century Gothic bold", 10))
+        self.others_entry = ctk.CTkEntry(self.costs_frame, width=100, corner_radius=5, placeholder_text="0,00 R$", font=("Century Gothic bold", 10))
         self.others_entry.grid(row=1, column=1, padx=(10,10), pady=5)
         self.others_entry.bind('<KeyRelease>', self.calc)
         
@@ -94,7 +143,7 @@ class screen(ctk.CTk,connect):
         self.total_others_labe = ctk.CTkLabel(self.info_cousts_frame, font=("Century Gothic bold", 12), text="Custo total da operação:")
         self.total_others_labe.grid(row=0, column=0, padx=5, pady=5, sticky='W')
         
-        self.total_others_label = ttk.Label(self.info_cousts_frame, font=("Century Gothic bold", 16), text="0,00")
+        self.total_others_label = ttk.Label(self.info_cousts_frame, font=("Century Gothic bold", 12), text="0,00 R$")
         self.total_others_label.grid(row=0, column=1, padx=5, pady=5, sticky='E')
         
     # Botoes de ação da operação !   
@@ -109,36 +158,9 @@ class screen(ctk.CTk,connect):
         
         
         
-    def calc(self, event=None):
-        try:
-            brokerage = float(self.brokerage_entry.get()) 
-        except:
-            brokerage = 0
-        try:
-            others = float(self.others_entry.get()) 
-        except:
-            others = 0 
-        try:
-            price = float(self.price_entry.get())
-            amount = float(self.amount_entry.get())
-            #brokerage = float(self.brokerage_entry.get())
-            #others = float(self.others_entry.get())  
-        except:
-            return False
-        else:
-            total = ((price + brokerage) * amount)  + others
-            self.total_others_label.config(text=total)
-        #return "12"
     
-    def validtes_stock(self):
-        
-        stockName = self.stockName_entry.get()
-        pattern = r"[^\w_]"
-        if re.findall(pattern, stockName):
-            erro = messagebox.showerror("Erro","Caracteres não permitidos")
-        else:
-            msg = messagebox.showinfo("Confirmado!","cadastrado com sucesso ")
-            return False      
+    
+       
             
 if __name__ == '__main__':
     app = screen()
