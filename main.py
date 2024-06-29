@@ -56,7 +56,7 @@ class screen(ctk.CTk,connect):
             self.total_others_label.config(text=f'{total} R$')
             self.value_total = total
         else:
-            messagebox.showwarning('Atenção','Caracter invalido')
+            #messagebox.showwarning('Atenção','Caracter invalido')
             self.amount_entry.delete(0,END) 
         
     # ### Realizar o tratamento dessas variaveis !
