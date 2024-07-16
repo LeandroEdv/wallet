@@ -1,3 +1,8 @@
+
+
+
+------------------------
+
 from connect import connect
 import customtkinter as ctk
 from tkinter import *
@@ -5,7 +10,7 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
 
-# trabalhando com expressões regulares
+# expressões regulares
 import re 
 
 
@@ -46,8 +51,7 @@ class screen(ctk.CTk,connect):
             print('pasou price')
             price = float(self.price_entry.get())
         else:
-            self.price_entry.delete(0,END)
-            
+            self.price_entry.delete(0,END)          
             
         if re.findall(pattern, self.amount_entry.get()):
             print('pasou amount')
@@ -155,12 +159,7 @@ class screen(ctk.CTk,connect):
         
         self.Exit_register_button = ctk.CTkButton(self.info_frame_button, width=50, height=30, corner_radius=5, text="Sair", fg_color='#909899', command=self.calc)
         self.Exit_register_button.grid(row=4, column=1, sticky=E, padx=(50, 0), pady=5)
-        
-        
-        
-    
-    
-       
+               
             
 if __name__ == '__main__':
     app = screen()
